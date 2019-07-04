@@ -490,8 +490,13 @@
                     <width>750</width>
                     <control type="image">
                         <height>350</height>
-                        <aspectratio scalediffuse="false">scale</aspectratio>
-                        <texture background="true" diffuse="diffuse/landscape.png">$INFO[ListItem.Art(fanart)]</texture>
+                        <visible>!Player.Playing | IsEmpty(ListItem.Trailer)</visible>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <texture background="true">$INFO[ListItem.Art(snap)]</texture>
+                    </control>
+                    <control type="videowindow">
+                        <height>350</height>
+                        <visible>Player.Playing + !IsEmpty(ListItem.Trailer)</visible>
                     </control>
                     <control type="group">
                         <top>410</top>
@@ -503,6 +508,22 @@
                             <param name="hdsd_flag" value="true" />
                             <param name="plot_height" value="270" />
                         </include>
+                    </control>
+                    <control type="image">
+                        <left>-view_pad</left>
+                        <top>-view_pad</top>
+                        <height>220</height>
+                        <width>220</width>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <texture background="true">$INFO[ListItem.Art(clearlogo)]</texture>
+                    </control>
+                    <control type="image">
+                        <left>600</left>
+                        <top>515</top>
+                        <height>150</height>
+                        <width>170</width>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <texture background="true">$INFO[ListItem.Art(cartridge)]</texture>
                     </control>
                 </control>
                 <control type="panel" id="504">
@@ -665,6 +686,20 @@
                         <top>290</top>
                         <include condition="$PARAM[text] + !Skin.HasSetting(DisableViewText)">View_Posters_Text</include>
                     </control>
+					<control type="button">
+						<left>0</left>
+						<top>0</top>
+						<width>1</width>
+						<height>1</height>
+						<onload condition="!IsEmpty(ListItem.Trailer)">PlayerControl(Repeat)</onload>
+						<onfocus condition="!IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.trailer],1)</onfocus>
+						<onunfocus condition="Player.HasVideo">PlayerControl(Stop)</onunfocus>
+						<texturefocus>-</texturefocus>
+						<texturenofocus>-</texturenofocus>
+						<animation type="Focus">
+							<effect type="fade" delay="250" start="0" end="100" />
+						</animation>
+					</control>
                 </control>
             </focusedlayout>
             <itemlayout width="606.66" height="480" condition="$PARAM[landscape]">
