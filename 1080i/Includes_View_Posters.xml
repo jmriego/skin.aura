@@ -13,6 +13,7 @@
             <include condition="!Skin.HasSetting(DisableViewMode.Lovefilm) + [Window.IsVisible(MyPrograms.xml) | Window.IsVisible(MyVideoNav.xml) | Window.IsVisible(MyMusicNav.xml) | Window.IsVisible(MyGames.xml)]">View_Posters_Lovefilm</include>
             <include condition="!Skin.HasSetting(DisableViewMode.EpisodeList) + [Window.IsVisible(MyVideoNav.xml) | Window.IsVisible(MyMusicNav.xml) | Window.IsVisible(MyGames.xml)]">View_Posters_EpisodeList</include>
             <include condition="!Skin.HasSetting(DisableViewMode.PosterInfo) + [Window.IsVisible(MyPrograms.xml) | Window.IsVisible(MyVideoNav.xml) | Window.IsVisible(MyMusicNav.xml) | Window.IsVisible(MyGames.xml)]">View_Posters_Info</include>
+            <include condition="!Skin.HasSetting(DisableViewMode.GamesShowcase) + [Window.IsVisible(MyPrograms.xml) | Window.IsVisible(MyGames.xml)]">View_Posters_GamesShowcase</include>
         </definition>
     </include>
     
@@ -480,6 +481,81 @@
         </control>
     </include>
 
+    <include name="View_Posters_GamesShowcase">
+        <control type="group">
+            <visible>Control.IsVisible(505)</visible>
+            <control type="group">
+                <control type="group">
+                    <left>20</left>
+                    <right>view_pad</right>
+                    <top>view_pad</top>
+                    <bottom>view_pad</bottom>
+                    <control type="image">
+                        <visible>IsEmpty(ListItem.Trailer) | !Player.Playing</visible>
+                        <!-- <left>890</left> -->
+                        <!-- <top>760</top> -->
+                        <width>750</width>
+                        <height>350</height>
+                        <!-- <texture background="true">special://skin/extras/backgrounds/pattern4.jpg</texture> -->
+                        <texture background="true">$INFO[ListItem.Art(snap)]</texture>
+                        <aspectratio>keep</aspectratio>
+                    </control>
+                    <control type="videowindow">
+                        <visible>Player.Playing + !IsEmpty(ListItem.Trailer)</visible>
+                        <width>750</width>
+                        <height>350</height>
+                    </control>
+                    <control type="image">
+                        <top>-100</top>
+                        <width>250</width>
+                        <height>250</height>
+                        <texture background="true">$INFO[ListItem.Art(clearlogo)]</texture>
+                        <aspectratio>keep</aspectratio>
+                    </control>
+                    <control type="image">
+                        <left>570</left>
+                        <top>510</top>
+                        <width>170</width>
+                        <height>140</height>
+                        <texture background="true">$INFO[ListItem.Art(cartridge)]</texture>
+                        <aspectratio>keep</aspectratio>
+                    </control>
+                    <control type="group">
+                        <!-- <height>550</height> -->
+                        <width>800</width>
+                        <top>400</top>
+                        <!-- <left>20</left> -->
+                        <include content="Object_Info">
+                            <param name="id" value="501" />
+                            <param name="width" value="800" />
+                            <param name="discart" value="true" />
+                            <param name="hdsd_flag" value="true" />
+                            <param name="plot_height" value="170" />
+                        </include>
+                    </control>
+                    <control type="panel" id="505">
+                        <left>800</left>
+                        <right>-10</right>
+                        <bottom>-10</bottom>
+                        <top>-10</top>
+                        <visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(actors) | $EXP[Exp_IsPluginAdvancedLauncher]</visible>
+                        <pagecontrol>60</pagecontrol>
+                        <include>View_NotTheseWindows</include>
+                        <viewtype label="$LOCALIZE[31413]">icon</viewtype>
+                        <include content="View_Forced">
+                            <param name="string" value="$LOCALIZE[31413]" />
+                        </include>
+                        <include content="View_Posters_Layout">
+                            <param name="id" value="505" />
+                            <param name="orientation" value="vertical" />
+                            <param name="games_showcase_poster" default="true" />
+                        </include>
+                    </control>
+                </control>
+            </control>
+        </control>
+    </include>
+
     <include name="View_Posters_Info">
         <control type="group">
             <visible>Control.IsVisible(504)</visible>
@@ -541,6 +617,8 @@
         <param name="landscape" default="false" />
         <param name="landscape_small" default="false" />
         <param name="episode_list" default="false" />
+        <param name="games_showcase_poster" default="false" />
+        <param name="games_showcase_landscape" default="false" />
         <param name="banner" default="false" />
         <param name="submenu" default="false" />
         <param name="text" default="true" />
@@ -1147,6 +1225,119 @@
                     </control>
                 </control>
             </focusedlayout>
+            <itemlayout width="240" height="295" condition="$PARAM[games_showcase_landscape]">
+                <control type="group">
+                    <left>view_pad</left>
+                    <right>-view_pad</right>
+                    <top>$PARAM[top_offset]</top>
+                    <bottom>$PARAM[bottom_offset]</bottom>
+                    <control type="group">
+                        <!-- <top>265</top> -->
+                        <height>195</height>
+                        <width>240</width>
+                        <include>View_Posters_Itemlayout_Artwork</include>
+                    </control>
+                    <control type="group">
+                        <top>-190</top>
+                        <include condition="$PARAM[text] + !Skin.HasSetting(DisableViewText)">View_Posters_Text</include>
+                    </control>
+                </control>
+            </itemlayout>
+            <focusedlayout width="240" height="295" condition="$PARAM[games_showcase_landscape]">
+                <control type="button">
+                    <left>0</left>
+                    <top>0</top>
+                    <width>1</width>
+                    <height>1</height>
+                    <!-- <onload condition="!IsEmpty(ListItem.Trailer)">PlayerControl(Repeat)</onload> -->
+                    <!-- <onfocus condition="!IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.trailer],1)</onfocus> -->
+                    <!-- <onunfocus condition="Player.HasVideo">PlayerControl(Stop)</onunfocus> -->
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <animation type="Focus">
+                        <effect type="fade" delay="250" start="0" end="100" />
+                    </animation>
+                </control>
+                <control type="group">
+                    <left>view_pad</left>
+                    <right>-view_pad</right>
+                    <top>$PARAM[top_offset]</top>
+                    <bottom>$PARAM[bottom_offset]</bottom>
+                    <include>Animation_FocusBounce</include>
+                    <control type="group">
+                        <height>195</height>
+                        <width>240</width>
+                        <include>View_Posters_Focusedlayout_Artwork</include>
+                        <!-- Highlight -->
+                        <control type="group">
+                            <visible>Control.HasFocus($PARAM[id])</visible>
+                            <include>View_Selectbox</include>
+                        </control>
+                    </control>
+                    <control type="group">
+                        <top>-190</top>
+                        <include condition="$PARAM[text] + !Skin.HasSetting(DisableViewText)">View_Posters_Text</include>
+                    </control>
+                </control>
+            </focusedlayout>
+            <itemlayout width="195" height="360" condition="$PARAM[games_showcase_poster]">
+                <control type="group">
+                    <left>view_pad</left>
+                    <right>-view_pad</right>
+                    <top>$PARAM[top_offset]</top>
+                    <bottom>$PARAM[bottom_offset]</bottom>
+                    <control type="group">
+                        <!-- <top>265</top> -->
+                        <height>260</height>
+                        <width>195</width>
+                        <include>View_Posters_Itemlayout_Artwork</include>
+                    </control>
+                    <control type="group">
+                        <top>-120</top>
+                        <include condition="$PARAM[text] + !Skin.HasSetting(DisableViewText)">View_Posters_Text</include>
+                    </control>
+                </control>
+            </itemlayout>
+            <focusedlayout width="195" height="360" condition="$PARAM[games_showcase_poster]">
+                <control type="button">
+                    <left>0</left>
+                    <top>0</top>
+                    <width>1</width>
+                    <height>1</height>
+                    <onload condition="!IsEmpty(ListItem.Trailer)">PlayerControl(Repeat)</onload>
+                    <onunload condition="Player.HasVideo">PlayerControl(Stop)</onunload>
+                    <onfocus condition="!IsEmpty(ListItem.Trailer)">AlarmClock(PlayTrailer,PlayMedia($INFO[ListItem.Trailer],false,1),00:01,silent)</onfocus>
+                    <onunfocus condition="!IsEmpty(ListItem.Trailer)">CancelAlarm(PlayTrailer, true)</onunfocus>
+                    <onunfocus condition="Player.HasVideo">PlayerControl(Stop)</onunfocus>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <animation type="Focus">
+                        <effect type="fade" delay="250" start="0" end="100" />
+                    </animation>
+                </control>
+                <control type="group">
+                    <left>view_pad</left>
+                    <right>-view_pad</right>
+                    <top>$PARAM[top_offset]</top>
+                    <bottom>$PARAM[bottom_offset]</bottom>
+                    <include>Animation_FocusBounce</include>
+                    <control type="group">
+                        <!-- <top>265</top> -->
+                        <height>260</height>
+                        <width>195</width>
+                        <include>View_Posters_Focusedlayout_Artwork</include>
+                        <!-- Highlight -->
+                        <control type="group">
+                            <visible>Control.HasFocus($PARAM[id])</visible>
+                            <include>View_Selectbox</include>
+                        </control>
+                    </control>
+                    <control type="group">
+                        <top>-120</top>
+                        <include condition="$PARAM[text] + !Skin.HasSetting(DisableViewText)">View_Posters_Text</include>
+                    </control>
+                </control>
+            </focusedlayout>
             <itemlayout width="130" height="130" condition="$PARAM[submenu]">
                 <control type="group">
                     <left>view_pad</left>
@@ -1392,6 +1583,7 @@
             <textcolor>main_fg_100</textcolor>
             <left>10</left>
             <right>10</right>
+            <top>385</top>
         </control>
         <control type="label">
             <label>$INFO[ListItem.Year]</label>
@@ -1401,7 +1593,7 @@
             <textcolor>main_fg_30</textcolor>
             <left>10</left>
             <right>10</right>
-            <top>30</top>
+            <top>415</top>
         </control>
     </include>
     <include name="View_Posters_Itemlayout_Artwork">
