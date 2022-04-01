@@ -3,3 +3,9 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-
 or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
 
 Icon images from iconmonstr.com see website for license terms
+
+
+# About this fork
+
+I'm just using the original repo and adding some features that were requested and maybe even had merge requests open about them.
+Also, I'm using this with the Advanced Emulator Launcher plugin and have created two new views: Poster Info and Game Info (with this one also including auto trailers play)
