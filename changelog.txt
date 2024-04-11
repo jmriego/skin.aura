@@ -1,3 +1,6 @@
+[B]2.0.0[/B]
+Preliminary support for Kodi Omega
+
 [B]1.6.0[/B]
 Create poster info view
 Fix for exit screen
