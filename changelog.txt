@@ -1,3 +1,8 @@
+[B]1.6.0[/B]
+Create poster info view
+Fix for exit screen
+Add translations
+
 [B]1.0.5[/B]
 Add basic filter to views
 Fix for bluray bdmv
